@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>Hello World</title>
+    <url>/2021/02/16/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>并查集模板</title>
+    <url>/2021/02/16/UnionFind/UnionFindTemplate/</url>
+    <content><![CDATA[<h2 id="并查集解决的问题"><a href="#并查集解决的问题" class="headerlink" title="并查集解决的问题"></a>并查集解决的问题</h2><ul>
+<li>p与q是否连接</li>
+<li>图中连通分量的数量</li>
+</ul>
+<h2 id="并查集的具体实现"><a href="#并查集的具体实现" class="headerlink" title="并查集的具体实现"></a>并查集的具体实现</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UnionFind</span></span>&#123;</span><br><span class="line">    <span class="comment">//连通分量的个数</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> count;</span><br><span class="line">    <span class="comment">//x连接的结点为parent[x]</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span>[] parent;</span><br><span class="line">    <span class="comment">//对应的根结点的连通分量的大小</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span>[] rank;</span><br><span class="line">    <span class="comment">/*构造函数*/</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">UnionFind</span><span class="params">(<span class="keyword">int</span> n)</span></span>&#123;</span><br><span class="line">        count=n;</span><br><span class="line">        parent=<span class="keyword">new</span> <span class="keyword">int</span>[n];</span><br><span class="line">        rank=<span class="keyword">new</span> <span class="keyword">int</span>[n];</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">            parent[i]=i;</span><br><span class="line">            rank[i]=<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/*找寻x的根节点*/</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">find</span><span class="params">(<span class="keyword">int</span> x)</span></span>&#123;</span><br><span class="line">        <span class="keyword">while</span>(x!=parent[x])</span><br><span class="line">            x=parent[x];</span><br><span class="line">        <span class="keyword">return</span> x;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/*检查p和q是否连接*/</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">connected</span><span class="params">(<span class="keyword">int</span> p,<span class="keyword">int</span> q)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> find(p)==find(q);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/*将p和q连接在一起*/</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">union</span><span class="params">(<span class="keyword">int</span> p,<span class="keyword">int</span> q)</span></span>&#123;</span><br><span class="line">        <span class="keyword">int</span> rootP=find(p);</span><br><span class="line">        <span class="keyword">int</span> rootQ=find(q);</span><br><span class="line">        <span class="keyword">if</span>(rootP==rootQ)</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        <span class="keyword">if</span>(rank[rootP]&lt;rank[rootQ])&#123;</span><br><span class="line">            parent[rootP]=rootQ;</span><br><span class="line">            rank[rootQ]+=rank[rootP];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span>&#123;</span><br><span class="line">            parent[rootQ]=rootP;</span><br><span class="line">            rank[rootP]+=rank[rootQ];</span><br><span class="line">        &#125;</span><br><span class="line">        count--;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/*返回连通分量的个数*/</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getCount</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> count;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><blockquote>
+<p>《算法》(第四版) P136-P149</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>UnionFind</category>
+      </categories>
+      <tags>
+        <tag>UnionFind</tag>
+        <tag>模板</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>windows快捷指令</title>
+    <url>/2021/02/17/wiki/windows/</url>
+    <content><![CDATA[<table>
+<thead>
+<tr>
+<th>功能</th>
+<th>快捷键</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>快速打开windows搜索</td>
+<td>win+”Q”</td>
+</tr>
+<tr>
+<td>窗口最小化</td>
+<td>win+↓</td>
+</tr>
+<tr>
+<td>窗口最大化</td>
+<td>win+↑</td>
+</tr>
+<tr>
+<td>标签页页进行切换</td>
+<td>ctrl+Tab</td>
+</tr>
+<tr>
+<td>关闭当前标签页</td>
+<td>ctrl+”W”</td>
+</tr>
+<tr>
+<td>重新打开刚刚关闭的页面</td>
+<td>ctrl+shift+”T”</td>
+</tr>
+<tr>
+<td>打开新的标签页</td>
+<td>ctrl+”T”</td>
+</tr>
+<tr>
+<td>查看浏览器记录</td>
+<td>ctrl+”H”</td>
+</tr>
+<tr>
+<td>查找关键字</td>
+<td>ctrl+”F”</td>
+</tr>
+<tr>
+<td>到达网址栏</td>
+<td>ctrl+”L”</td>
+</tr>
+<tr>
+<td>查看历史记录</td>
+<td>ctrl+”H”</td>
+</tr>
+<tr>
+<td>新增浏览器视窗</td>
+<td>ctrl+”N”</td>
+</tr>
+<tr>
+<td>切换任务窗口</td>
+<td>Alt+Tab</td>
+</tr>
+</tbody></table>
+]]></content>
+      <categories>
+        <category>wiki</category>
+      </categories>
+      <tags>
+        <tag>windows</tag>
+        <tag>快捷指令</tag>
+      </tags>
+  </entry>
+</search>
