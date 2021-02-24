@@ -15,6 +15,31 @@
 ]]></content>
   </entry>
   <entry>
+    <title>BFS,DFS算法模板</title>
+    <url>/2021/02/24/BFSandDFS/Bfs_Dfs_template/</url>
+    <content><![CDATA[<h2 id="无向图的API"><a href="#无向图的API" class="headerlink" title="无向图的API"></a>无向图的API</h2><p>代码如下：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Graph</span></span>&#123;</span><br><span class="line">	<span class="comment">//顶点数目</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">int</span> V;</span><br><span class="line">	<span class="comment">//边的数目</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">int</span> E;</span><br><span class="line">	<span class="comment">//邻接表</span></span><br><span class="line">	<span class="keyword">private</span> Bag&lt;Integer&gt;[] adj;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">Graph</span><span class="params">(<span class="keyword">int</span> V)</span></span>&#123;</span><br><span class="line">		<span class="keyword">this</span>,V=V;</span><br><span class="line">		<span class="keyword">this</span>.E=<span class="number">0</span>;</span><br><span class="line">		<span class="comment">//创建邻接表</span></span><br><span class="line">		adj=(Bag&lt;Integer&gt;[])<span class="keyword">new</span> Bag[V];</span><br><span class="line">		<span class="comment">//将所有的链表初始化为空</span></span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> v=<span class="number">0</span>;v&lt;V;v++)&#123;</span><br><span class="line">			adj[v]=<span class="keyword">new</span> Bag&lt;Integer&gt;();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">V</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">return</span> V;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">E</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">return</span> E;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addEdge</span><span class="params">(<span class="keyword">int</span> v,<span class="keyword">int</span> w)</span></span>&#123;</span><br><span class="line">		adj[v].add(w);</span><br><span class="line">		adj[w].add(v);</span><br><span class="line">		E++;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> Iterable&lt;Integer&gt; <span class="title">adj</span><span class="params">(<span class="keyword">int</span> v)</span></span>&#123;</span><br><span class="line">		<span class="keyword">return</span> adj[v];</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="深度优先搜索-DFS"><a href="#深度优先搜索-DFS" class="headerlink" title="深度优先搜索 DFS"></a>深度优先搜索 DFS</h2><h3 id="深度优先搜索解决的问题"><a href="#深度优先搜索解决的问题" class="headerlink" title="深度优先搜索解决的问题"></a>深度优先搜索解决的问题</h3><ul>
+<li><strong>连通性</strong>。回答“两个给定的顶点是否连通？”或者“图中有多少个连通子图？”等类似问题</li>
+<li><strong>单点路径</strong>。回答“从s到给定目的顶点v是否存在一条路径？如果有找到这条路径”等类似问题。<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DepthFirstPaths</span></span>&#123;</span><br><span class="line">	<span class="comment">//这个顶点上调用过dfs()了吗？</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">boolean</span>[] marked;</span><br><span class="line">	<span class="comment">//从起点到一个顶点的已知路径上的最后一个顶点</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">int</span>[] edgeTo;</span><br><span class="line">	<span class="comment">//起点</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">int</span> s;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">DepthFirstPaths</span><span class="params">(Graph G,<span class="keyword">int</span> s)</span></span>&#123;</span><br><span class="line">		marked[v]=<span class="keyword">true</span>;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> w:G.adj(v))&#123;</span><br><span class="line">			<span class="keyword">if</span>(!marked[w])&#123;</span><br><span class="line">				edgeTo[w]=v;</span><br><span class="line">				dfs(G,w);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hasPathTo</span><span class="params">(<span class="keyword">int</span> v)</span></span>&#123;</span><br><span class="line">		<span class="keyword">return</span> marked[v];</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> Iterable&lt;Integer&gt; <span class="title">pathTo</span><span class="params">(<span class="keyword">int</span> v)</span></span>&#123;</span><br><span class="line">		<span class="keyword">if</span>(!hasPathTo(v))<span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">		Stack&lt;Integer&gt;path=<span class="keyword">new</span> Stack&lt;Integer&gt;();</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> x=v;x!=s;x=edgeTo[x])</span><br><span class="line">			path.push(x);</span><br><span class="line">		path.push(s);</span><br><span class="line">		<span class="keyword">return</span> path;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="广度优先搜索-BFS"><a href="#广度优先搜索-BFS" class="headerlink" title="广度优先搜索 BFS"></a>广度优先搜索 BFS</h2><h3 id="广度优先搜索解决的问题"><a href="#广度优先搜索解决的问题" class="headerlink" title="广度优先搜索解决的问题"></a>广度优先搜索解决的问题</h3></li>
+<li><strong>单点最短路径</strong>。 给定一幅图和一个起点s，回答从s到给定目的顶点v是否存在一条路径？如果有，找出其中最短的那条。<h3 id="代码-1"><a href="#代码-1" class="headerlink" title="代码"></a>代码</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BreadthFirstPaths</span></span>&#123;</span><br><span class="line">	<span class="comment">//到达该顶点的最短路径已知吗？</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">boolean</span>[] marked;</span><br><span class="line">	<span class="comment">//到达该顶点的已知路径上的最后一个顶点</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">int</span>[] edgeTo;</span><br><span class="line">	<span class="comment">//起点</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">int</span> s;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">BreadthFirstPaths</span><span class="params">(Graph G,<span class="keyword">int</span> s)</span></span>&#123;</span><br><span class="line">		marked=<span class="keyword">new</span> <span class="keyword">boolean</span>[G.V()];</span><br><span class="line">		edgeTo=<span class="keyword">new</span> <span class="keyword">int</span>[G.V()];</span><br><span class="line">		<span class="keyword">this</span>.s=s;</span><br><span class="line">		bfs(G.s);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">bfs</span><span class="params">(Graph G,<span class="keyword">int</span> s)</span></span>&#123;</span><br><span class="line">		Queue&lt;Integer&gt;queue=<span class="keyword">new</span> Queue&lt;Integer&gt;();</span><br><span class="line">		marked[s]=<span class="keyword">true</span>;</span><br><span class="line">		queue.enqueue(s);</span><br><span class="line">		<span class="keyword">while</span>(!queue.isEmpty())&#123;</span><br><span class="line">			<span class="keyword">int</span> v=queue.dequeue();</span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">int</span> w:G.adj(v))&#123;</span><br><span class="line">				<span class="keyword">if</span>(!marked[w])&#123;</span><br><span class="line">					edgeTo[w]=v;</span><br><span class="line">					marked[w]=<span class="keyword">true</span>;</span><br><span class="line">					queue.enqueue(w);</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hasPathTo</span><span class="params">(<span class="keyword">int</span> v)</span></span>&#123;</span><br><span class="line">		<span class="keyword">return</span> marked[v];</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><blockquote>
+<p>《算法》(第四版) P341-P359</p>
+</blockquote>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>BFS_DFS</category>
+      </categories>
+      <tags>
+        <tag>BFS</tag>
+        <tag>DFS</tag>
+        <tag>模板</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>LRU算法</title>
     <url>/2021/02/23/LRU/lru/</url>
     <content><![CDATA[<h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p><img src="https://gitee.com/liang_haonan/blogimg/raw/master/img/lru.PNG"></p>
@@ -43,8 +68,8 @@
         <category>LRU</category>
       </categories>
       <tags>
-        <tag>LRU</tag>
         <tag>模板</tag>
+        <tag>LRU</tag>
       </tags>
   </entry>
   <entry>
@@ -112,6 +137,78 @@
       </tags>
   </entry>
   <entry>
+    <title>windows快捷指令</title>
+    <url>/2021/02/17/wiki/windows/</url>
+    <content><![CDATA[<table>
+<thead>
+<tr>
+<th>功能</th>
+<th>快捷键</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>快速打开windows搜索</td>
+<td>win+”Q”</td>
+</tr>
+<tr>
+<td>窗口最小化</td>
+<td>win+↓</td>
+</tr>
+<tr>
+<td>窗口最大化</td>
+<td>win+↑</td>
+</tr>
+<tr>
+<td>标签页页进行切换</td>
+<td>ctrl+Tab</td>
+</tr>
+<tr>
+<td>关闭当前标签页</td>
+<td>ctrl+”W”</td>
+</tr>
+<tr>
+<td>重新打开刚刚关闭的页面</td>
+<td>ctrl+shift+”T”</td>
+</tr>
+<tr>
+<td>打开新的标签页</td>
+<td>ctrl+”T”</td>
+</tr>
+<tr>
+<td>查看浏览器记录</td>
+<td>ctrl+”H”</td>
+</tr>
+<tr>
+<td>查找关键字</td>
+<td>ctrl+”F”</td>
+</tr>
+<tr>
+<td>到达网址栏</td>
+<td>ctrl+”L”</td>
+</tr>
+<tr>
+<td>查看历史记录</td>
+<td>ctrl+”H”</td>
+</tr>
+<tr>
+<td>新增浏览器视窗</td>
+<td>ctrl+”N”</td>
+</tr>
+<tr>
+<td>切换任务窗口</td>
+<td>Alt+Tab</td>
+</tr>
+</tbody></table>
+]]></content>
+      <categories>
+        <category>wiki</category>
+      </categories>
+      <tags>
+        <tag>windows</tag>
+        <tag>快捷指令</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>并查集解决小岛问题</title>
     <url>/2021/02/19/UnionFind/UnionFindIsland/</url>
     <content><![CDATA[<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>本篇文章主要解决LeetCode小岛问题，使用方法为并查集。</p>
@@ -158,6 +255,26 @@
         <category>UnionFind</category>
       </categories>
       <tags>
+        <tag>UnionFind</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>并查集模板</title>
+    <url>/2021/02/16/UnionFind/UnionFindTemplate/</url>
+    <content><![CDATA[<h2 id="并查集解决的问题"><a href="#并查集解决的问题" class="headerlink" title="并查集解决的问题"></a>并查集解决的问题</h2><ul>
+<li>p与q是否连接</li>
+<li>图中连通分量的数量</li>
+</ul>
+<h2 id="并查集的具体实现"><a href="#并查集的具体实现" class="headerlink" title="并查集的具体实现"></a>并查集的具体实现</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UnionFind</span></span>&#123;</span><br><span class="line">    <span class="comment">//连通分量的个数</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> count;</span><br><span class="line">    <span class="comment">//x连接的结点为parent[x]</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span>[] parent;</span><br><span class="line">    <span class="comment">//对应的根结点的连通分量的大小</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span>[] rank;</span><br><span class="line">    <span class="comment">/*构造函数*/</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">UnionFind</span><span class="params">(<span class="keyword">int</span> n)</span></span>&#123;</span><br><span class="line">        count=n;</span><br><span class="line">        parent=<span class="keyword">new</span> <span class="keyword">int</span>[n];</span><br><span class="line">        rank=<span class="keyword">new</span> <span class="keyword">int</span>[n];</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">            parent[i]=i;</span><br><span class="line">            rank[i]=<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/*找寻x的根节点*/</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">find</span><span class="params">(<span class="keyword">int</span> x)</span></span>&#123;</span><br><span class="line">        <span class="keyword">while</span>(x!=parent[x])</span><br><span class="line">            x=parent[x];</span><br><span class="line">        <span class="keyword">return</span> x;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/*检查p和q是否连接*/</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">connected</span><span class="params">(<span class="keyword">int</span> p,<span class="keyword">int</span> q)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> find(p)==find(q);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/*将p和q连接在一起*/</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">union</span><span class="params">(<span class="keyword">int</span> p,<span class="keyword">int</span> q)</span></span>&#123;</span><br><span class="line">        <span class="keyword">int</span> rootP=find(p);</span><br><span class="line">        <span class="keyword">int</span> rootQ=find(q);</span><br><span class="line">        <span class="keyword">if</span>(rootP==rootQ)</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        <span class="keyword">if</span>(rank[rootP]&lt;rank[rootQ])&#123;</span><br><span class="line">            parent[rootP]=rootQ;</span><br><span class="line">            rank[rootQ]+=rank[rootP];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span>&#123;</span><br><span class="line">            parent[rootQ]=rootP;</span><br><span class="line">            rank[rootP]+=rank[rootQ];</span><br><span class="line">        &#125;</span><br><span class="line">        count--;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/*返回连通分量的个数*/</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getCount</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> count;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><blockquote>
+<p>《算法》(第四版) P136-P149</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>UnionFind</category>
+      </categories>
+      <tags>
+        <tag>模板</tag>
         <tag>UnionFind</tag>
       </tags>
   </entry>
@@ -282,100 +399,8 @@
         <category>wiki</category>
       </categories>
       <tags>
+        <tag>快捷指令</tag>
         <tag>vscode</tag>
-        <tag>快捷指令</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>并查集模板</title>
-    <url>/2021/02/16/UnionFind/UnionFindTemplate/</url>
-    <content><![CDATA[<h2 id="并查集解决的问题"><a href="#并查集解决的问题" class="headerlink" title="并查集解决的问题"></a>并查集解决的问题</h2><ul>
-<li>p与q是否连接</li>
-<li>图中连通分量的数量</li>
-</ul>
-<h2 id="并查集的具体实现"><a href="#并查集的具体实现" class="headerlink" title="并查集的具体实现"></a>并查集的具体实现</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UnionFind</span></span>&#123;</span><br><span class="line">    <span class="comment">//连通分量的个数</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> count;</span><br><span class="line">    <span class="comment">//x连接的结点为parent[x]</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span>[] parent;</span><br><span class="line">    <span class="comment">//对应的根结点的连通分量的大小</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span>[] rank;</span><br><span class="line">    <span class="comment">/*构造函数*/</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">UnionFind</span><span class="params">(<span class="keyword">int</span> n)</span></span>&#123;</span><br><span class="line">        count=n;</span><br><span class="line">        parent=<span class="keyword">new</span> <span class="keyword">int</span>[n];</span><br><span class="line">        rank=<span class="keyword">new</span> <span class="keyword">int</span>[n];</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">            parent[i]=i;</span><br><span class="line">            rank[i]=<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/*找寻x的根节点*/</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">find</span><span class="params">(<span class="keyword">int</span> x)</span></span>&#123;</span><br><span class="line">        <span class="keyword">while</span>(x!=parent[x])</span><br><span class="line">            x=parent[x];</span><br><span class="line">        <span class="keyword">return</span> x;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/*检查p和q是否连接*/</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">connected</span><span class="params">(<span class="keyword">int</span> p,<span class="keyword">int</span> q)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> find(p)==find(q);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/*将p和q连接在一起*/</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">union</span><span class="params">(<span class="keyword">int</span> p,<span class="keyword">int</span> q)</span></span>&#123;</span><br><span class="line">        <span class="keyword">int</span> rootP=find(p);</span><br><span class="line">        <span class="keyword">int</span> rootQ=find(q);</span><br><span class="line">        <span class="keyword">if</span>(rootP==rootQ)</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        <span class="keyword">if</span>(rank[rootP]&lt;rank[rootQ])&#123;</span><br><span class="line">            parent[rootP]=rootQ;</span><br><span class="line">            rank[rootQ]+=rank[rootP];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span>&#123;</span><br><span class="line">            parent[rootQ]=rootP;</span><br><span class="line">            rank[rootP]+=rank[rootQ];</span><br><span class="line">        &#125;</span><br><span class="line">        count--;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/*返回连通分量的个数*/</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getCount</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> count;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><blockquote>
-<p>《算法》(第四版) P136-P149</p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>UnionFind</category>
-      </categories>
-      <tags>
-        <tag>模板</tag>
-        <tag>UnionFind</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>windows快捷指令</title>
-    <url>/2021/02/17/wiki/windows/</url>
-    <content><![CDATA[<table>
-<thead>
-<tr>
-<th>功能</th>
-<th>快捷键</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>快速打开windows搜索</td>
-<td>win+”Q”</td>
-</tr>
-<tr>
-<td>窗口最小化</td>
-<td>win+↓</td>
-</tr>
-<tr>
-<td>窗口最大化</td>
-<td>win+↑</td>
-</tr>
-<tr>
-<td>标签页页进行切换</td>
-<td>ctrl+Tab</td>
-</tr>
-<tr>
-<td>关闭当前标签页</td>
-<td>ctrl+”W”</td>
-</tr>
-<tr>
-<td>重新打开刚刚关闭的页面</td>
-<td>ctrl+shift+”T”</td>
-</tr>
-<tr>
-<td>打开新的标签页</td>
-<td>ctrl+”T”</td>
-</tr>
-<tr>
-<td>查看浏览器记录</td>
-<td>ctrl+”H”</td>
-</tr>
-<tr>
-<td>查找关键字</td>
-<td>ctrl+”F”</td>
-</tr>
-<tr>
-<td>到达网址栏</td>
-<td>ctrl+”L”</td>
-</tr>
-<tr>
-<td>查看历史记录</td>
-<td>ctrl+”H”</td>
-</tr>
-<tr>
-<td>新增浏览器视窗</td>
-<td>ctrl+”N”</td>
-</tr>
-<tr>
-<td>切换任务窗口</td>
-<td>Alt+Tab</td>
-</tr>
-</tbody></table>
-]]></content>
-      <categories>
-        <category>wiki</category>
-      </categories>
-      <tags>
-        <tag>快捷指令</tag>
-        <tag>windows</tag>
       </tags>
   </entry>
 </search>
